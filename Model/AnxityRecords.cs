@@ -19,6 +19,7 @@ public class AnxityRecords
         this.comment = comment;
         this.type = type;
 }
+   
     public AnxityRecords()
     {
   
