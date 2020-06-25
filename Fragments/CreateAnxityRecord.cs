@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -17,7 +18,6 @@ using Android.Widget;
 using Java.Lang;
 using Java.Util.Zip;
 
-
 namespace Anxityy.Fragments
 {
     public class CreateAnxityRecord : Android.Support.V4.App.Fragment
@@ -26,7 +26,7 @@ namespace Anxityy.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-          
+
             // Create your fragment here
 
         }
@@ -43,12 +43,21 @@ namespace Anxityy.Fragments
             saveForm.Click += DoSmthNew;
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
-       
+            TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_Resulttext);
+            SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekBarRating);
+            seekbar.ProgressChanged += (System.Object sender, SeekBar.ProgressChangedEventArgs e) =>
+             {
+                 if (e.FromUser)
+                 {
+
+                     pickerResult.Text = "" + e.Progress;
+                 }
+             };
             return view;
 
 
         }
-  
+
         void getDatePicker(object sender, EventArgs e)
         {
         
