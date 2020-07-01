@@ -85,8 +85,9 @@ namespace Anxityy.Fragments
         }
         public void getAnxRecord()
         {
-
-            anx = new AnxityDatabase().GetAnxityRecordAsync(Arguments.GetInt("recordId")).Result;
+            int anxId = Arguments.GetInt("recordId");
+       
+            anx = new AnxityDatabase().GetAnxityRecordAsync(anxId).Result;
         }
         public static string FirstCharToUpper(string input)
         {

@@ -71,12 +71,12 @@
     <Compile Include="Features\AlertNotificaiton.cs" />
     <Compile Include="Features\Location.cs" />
     <Compile Include="Features\Notification.cs" />
-    <Compile Include="Features\Vibration.cs" />
+    <Compile Include="Features\DetectShake.cs" />
     <Compile Include="Fragments\CreateAnxityRecord.cs" />
+    <Compile Include="Fragments\HomeFragment.cs" />
     <Compile Include="Fragments\Journal.cs" />
-    <Compile Include="Fragments\Main_Page.cs" />
+    <Compile Include="Fragments\NavigationFragment.cs" />
     <Compile Include="Fragments\Single_RecordAnx.cs" />
-    <Compile Include="Fragments\MenuFragment.cs" />
     <Compile Include="Interface\Models.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Model\AnxityRecords.cs" />
@@ -145,11 +145,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\menuFragment.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\arrow.png" />
   </ItemGroup>
   <ItemGroup>
@@ -172,12 +167,7 @@
     <AndroidResource Include="Resources\drawable\emoji_sad.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\main_page.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResourceAnalysisConfig Include="Utility\diagnostics1.xml">
-      <SubType>Designer</SubType>
-    </AndroidResourceAnalysisConfig>
+    <AndroidResource Include="Resources\layout\navigationFragment.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\singleRecordAnx.xml" />
@@ -190,6 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\journal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\HomeFragment.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

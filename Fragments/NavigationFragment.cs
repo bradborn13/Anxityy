@@ -15,7 +15,7 @@ using Android.Widget;
 
 namespace Anxityy.Fragments
 {
-    public class Main_Page : Android.Support.V4.App.Fragment
+    public class NavigationFragment : Android.Support.V4.App.Fragment
     {
         TextView navHome;
         TextView navJournal;
@@ -33,10 +33,8 @@ namespace Anxityy.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            View view = inflater.Inflate(Resource.Layout.main_page, container, false);
+            View view = inflater.Inflate(Resource.Layout.navigationFragment, container, false);
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentContent, new MenuFragment() , "MenuFragment");
-            trans.Commit(); ;
              navHome =view.FindViewById<TextView>(Resource.Id.homeNavBtn);
              navJournal = view.FindViewById<TextView>(Resource.Id.journalNavBtn);
              navCalendar = view.FindViewById<TextView>(Resource.Id.calendarNavBtn);
@@ -79,14 +77,14 @@ namespace Anxityy.Fragments
         {
             updateNavMenu(1);
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentContent, new MenuFragment(), "MenuFragment");
+            trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "MenuFragment");
             trans.Commit();
         }
         void redirectToJournal(object sender, EventArgs e)
         {
             updateNavMenu(2);
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentContent, new Journal(), "Journal");
+            trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
             trans.Commit();
 
         }

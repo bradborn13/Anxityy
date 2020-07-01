@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace Anxityy.Fragments
 {
-    public class MenuFragment : Android.Support.V4.App.Fragment
+    public class HomeFragment : Android.Support.V4.App.Fragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -26,7 +26,7 @@ namespace Anxityy.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            View view = inflater.Inflate(Resource.Layout.menuFragment, container, false);
+            View view = inflater.Inflate(Resource.Layout.HomeFragment, container, false);
             return view;
         }
     }

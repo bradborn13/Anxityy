@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Icu.Util;
@@ -26,12 +26,11 @@ namespace Anxityy.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             // Create your fragment here
 
         }
 
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public   override  View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
@@ -39,8 +38,6 @@ namespace Anxityy.Fragments
             View view = inflater.Inflate(Resource.Layout.createAnxityRecord, container, false);
             var formDate = view.FindViewById<EditText>(Resource.Id.formDate);
             formDate.Click += getDatePicker;
-                var saveForm = view.FindViewById<TextView>(Resource.Id.cevaVar);
-            saveForm.Click += DoSmthNew;
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
             TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_Resulttext);
@@ -54,10 +51,19 @@ namespace Anxityy.Fragments
                  }
              };
             return view;
+        }
+        public override async void OnActivityCreated(Bundle savedInstanceState)
+        {
+            base.OnActivityCreated(savedInstanceState);
+            var saveForm = Activity.FindViewById<TextView>(Resource.Id.cevaVar);
+            saveForm.Click += async (sender, e) =>
+            {
+                await addAnxRecord(sender, e);
+            };
 
 
         }
-
+     
         void getDatePicker(object sender, EventArgs e)
         {
         
@@ -76,10 +82,10 @@ namespace Anxityy.Fragments
 
             var trans = Activity.SupportFragmentManager.BeginTransaction();
             //trans.SetCustomAnimations(Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top);
-            trans.Replace(Resource.Id.fragmentLayout, new Main_Page(), "Main_Page");
+            trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "Main_Page");
             trans.Commit(); 
         }
-        public void DoSmthNew(object sender, EventArgs e)
+        public async Task addAnxRecord(object sender, EventArgs e)
         {
             var formLocation = Activity.FindViewById<EditText>(Resource.Id.formLocation).Text;
             var formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
@@ -87,13 +93,13 @@ namespace Anxityy.Fragments
 
             var record = new AnxityRecords(formLocation, formDate, 3, formNote, "art");
             var db = new AnxityDatabase();
-            db.SaveAnxityRecordAsync(record);
+          await db.SaveAnxityRecordAsync(record);
             Android.App.AlertDialog cat = new Android.App.AlertDialog.Builder(Activity).Create();
-
+            var trans = Activity.SupportFragmentManager.BeginTransaction();
+            trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
             cat.SetMessage("Location : " + formLocation + " || Date :" + formDate + " || Note : " + formNote);
 
-            var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentLayout, new Journal(), "Main_Page");
+       
             trans.Commit();
             cat.SetTitle("message title");
             cat.SetButton("OK", delegate { });

@@ -33,7 +33,8 @@ namespace Anxityy
             SetContentView(Resource.Layout.activity_main);
 
             var trans = SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentLayout, new Main_Page(), "Main_Page");  
+            trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "Main_Page");
+            trans.Replace(Resource.Id.menuFragment, new NavigationFragment(), "MenuFragment");
             trans.Commit();
             CreateNotificationChannel();
             var createRecordForm = FindViewById<TextView>(Resource.Id.createRecordForm);
@@ -43,14 +44,14 @@ namespace Anxityy
         private void CreateRecordForm_Click(object sender, EventArgs e)
         {
             var trans = SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentLayout, new CreateAnxityRecord(), "AddAnxityForm");
+            trans.Replace(Resource.Id.contentFragment, new CreateAnxityRecord(), "AddAnxityForm");
             trans.Commit();
         }
 
         void SendOutSampleNotification(object sender, EventArgs e)
         {
             var trans = SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.fragmentLayout, new Journal(), "Journal");
+            trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
             trans.Commit();
 
             try
