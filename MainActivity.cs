@@ -12,17 +12,29 @@ using System.IO;
 using Environment = System.Environment;
 using System.Linq;
 using Android.Gms.Maps;
+using Android.Content;
+using JoanZapata.XamarinIconify;
+using JoanZapata.XamarinIconify.Fonts;
+using Android.Support.Design.Widget;
 
 namespace Anxityy
 {
     [Activity(Label = "Anxity", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        internal static MainActivity Instance { get; private set; }
 
         static readonly int NOTIFICATION_ID = 1000;
         static readonly string CHANNEL_ID = "location_notification";
         internal static readonly string COUNT_KEY = "count";
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -31,8 +43,13 @@ namespace Anxityy
             Window.RequestFeature(Android.Views.WindowFeatures.NoTitle);
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-
+            JoanZapata.XamarinIconify.Iconify
+                     .with(new JoanZapata.XamarinIconify.Fonts.FontAwesomeModule())
+                     .with(new JoanZapata.XamarinIconify.Fonts.IonIconsModule());
             var trans = SupportFragmentManager.BeginTransaction();
+            var intent = new Intent(this, typeof(SampleService));
+                StartService(intent);
+         
             trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "Main_Page");
             trans.Replace(Resource.Id.menuFragment, new NavigationFragment(), "MenuFragment");
             trans.Commit();
@@ -59,7 +76,7 @@ namespace Anxityy
                 // Use default vibration length
                 Vibration.Vibrate();
 
-                // Or use specified time
+                // Or use specified tim
                 var duration = TimeSpan.FromSeconds(2);
                 Vibration.Vibrate(duration);
             }
@@ -87,14 +104,6 @@ namespace Anxityy
 
         }
 
-
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
         void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)

@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Bluetooth;
-using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 
@@ -17,8 +10,6 @@ namespace Anxityy.Fragments
 {
     public class Journal : Android.Support.V4.App.Fragment
     {
-
-
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,7 +26,7 @@ namespace Anxityy.Fragments
 
 
             List<AnxityRecords> records = new AnxityDatabase().GetAnxityRecordsAsync().Result;
-            var c = records.GroupBy(p => p.date);
+            var c = records.OrderByDescending(p => Convert.ToDateTime(p.date)).GroupBy(p => p.date);
             foreach (var anx in c)
             {
                 if (anx.Count() > 0)
@@ -111,8 +102,9 @@ namespace Anxityy.Fragments
                     args.PutInt("recordId", x._id);
                     fragment.Arguments = args;
                     var trans = Activity.SupportFragmentManager.BeginTransaction();
-                    trans.Replace(Resource.Id.contentFragment, fragment, "Single_record");
-                    trans.Commit(); ;
+                    trans.Replace(Resource.Id.contentFragment, fragment, "Single_record")
+                    .AddToBackStack(null)
+                    .Commit(); ;
 
 
                 };

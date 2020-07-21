@@ -5,18 +5,21 @@ public class AnxityRecords
 {
     [PrimaryKey, AutoIncrement]
     public int _id { get; set; }
-    public string location { get; set; }
+    public string locationLat { get; set; }
+    public string locationLong { get; set; }
     public string date { get; set; }
     public int rating { get; set; }
-    public string comment { get; set; }
-    public string type { get; set; } 
-
- public AnxityRecords(string location, string date, int rating, string comment, string type)
+    public string note { get; set; }
+    public string type { get; set; }
+    public string locationName { get; set; }
+    public AnxityRecords( string date, int rating, string note, string type, string locationName, string locationLat = "null", string locationLong = "null")
 {
-        this.location = location;
+        this.locationLat = locationLat == "null" ? null:locationLat;
+        this.locationLong = locationLong == "null" ? null : locationLong;
+        this.locationName = locationName;
         this.date = date;
         this.rating = rating;
-        this.comment = comment;
+        this.note = note;
         this.type = type;
 }
    

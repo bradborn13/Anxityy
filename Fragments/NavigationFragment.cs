@@ -6,21 +6,23 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using JoanZapata.XamarinIconify;
+using JoanZapata.XamarinIconify.Fonts;
 
 namespace Anxityy.Fragments
 {
     public class NavigationFragment : Android.Support.V4.App.Fragment
     {
-        TextView navHome;
-        TextView navJournal;
-        TextView navCalendar;
-        int selectedItem = 1;
+        private BottomNavigationView bottomBar;
+        
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,69 +37,41 @@ namespace Anxityy.Fragments
 
             View view = inflater.Inflate(Resource.Layout.navigationFragment, container, false);
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-             navHome =view.FindViewById<TextView>(Resource.Id.homeNavBtn);
-             navJournal = view.FindViewById<TextView>(Resource.Id.journalNavBtn);
-             navCalendar = view.FindViewById<TextView>(Resource.Id.calendarNavBtn);
-            navHome.Click += redirectHome;
-            navJournal.Click += redirectToJournal;
-            navCalendar.Click += redirectToCalendar;
+            var bottomBar = view.FindViewById<BottomNavigationView>(Resource.Id.bottomNavigationView);
+            bottomBar.NavigationItemSelected += async (s, a) =>
+            {
+
+                switch (a.Item.ItemId)
+                {
+                    case Resource.Id.homeTab:
+                        var trans = Activity.SupportFragmentManager.BeginTransaction();
+                        trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "MenuFragment");
+                        trans.Commit();
+                        break;
+                    case Resource.Id.journalTab:
+                         trans = Activity.SupportFragmentManager.BeginTransaction();
+                        trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
+                        trans.Commit();
+                        break;
+                    case Resource.Id.calendarTab:
+                        var location = await new LocationTracker().getCurrentLocation();
+                        Android.App.AlertDialog cat = new Android.App.AlertDialog.Builder(Activity).Create();
+                        cat.SetMessage($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                        cat.SetTitle("message title");
+                        cat.SetButton("OK", delegate { });
+                        cat.Show();
+                        break;
+                }
+            };
+
+          
+
             return view;
 
         }
-        public void updateNavMenu(int updateElementNo)
-        {
-            this.selectedItem = updateElementNo;
-            navHome.SetTextColor(Color.Black);
-            navJournal.SetTextColor(Color.Black);
-            navCalendar.SetTextColor(Color.Black);
-            navCalendar.SetTextSize(ComplexUnitType.Px, 30);
-            navJournal.SetTextSize(ComplexUnitType.Px, 30);
-            navHome.SetTextSize(ComplexUnitType.Px, 30);
 
-
-            if (selectedItem == 1)
-            {
-                navHome.SetTextColor(Color.Blue);
-                navHome.SetTextSize(ComplexUnitType.Px, 40);
-
-            }
-            if (selectedItem == 2)
-            {
-                navJournal.SetTextColor(Color.Blue);
-                navJournal.SetTextSize(ComplexUnitType.Px, 40);
-
-            }
-            if (selectedItem == 3)
-            {
-                 navCalendar.SetTextColor(Color.Blue);
-                navCalendar.SetTextSize(ComplexUnitType.Px, 40);
-            }
-        }
-        void redirectHome(object sender, EventArgs e)
-        {
-            updateNavMenu(1);
-            var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "MenuFragment");
-            trans.Commit();
-        }
-        void redirectToJournal(object sender, EventArgs e)
-        {
-            updateNavMenu(2);
-            var trans = Activity.SupportFragmentManager.BeginTransaction();
-            trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
-            trans.Commit();
-
-        }
-        void redirectToCalendar(object sender, EventArgs e)
-        {
-            updateNavMenu(3);
-            //var trans = Activity.SupportFragmentManager.BeginTransaction();
-            //trans.Replace(Resource.Id.fragmentContent, new Single_RecordAnx(), "MenuFragment");
-            //trans.Commit(); 
-          
-   
-          
-          
-        }
     }
 }
+
+     
+

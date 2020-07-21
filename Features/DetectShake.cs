@@ -18,9 +18,15 @@ public class DetectShake
         try
         {
             if (Accelerometer.IsMonitoring)
+            {
                 Accelerometer.Stop();
+         
+            }
+        
             else
-                Accelerometer.Start(speed);
+                Accelerometer.Start(speed); 
+         
+
         }
         catch(FeatureNotSupportedException fnEx)
         {
