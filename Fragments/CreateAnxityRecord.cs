@@ -64,7 +64,8 @@ namespace Anxityy.Fragments
             {
                 try
                 {
-                    autoCompleteOptions = await fnDownloadString(strAutoCompleteGoogleApi + txtSearch.Text + "&key=" + "AIzaSyCKO2n8Sbu1Ho7YHyeirQMILx0IAOMlxug");
+                    var googleKey = Resources.GetString(Resource.String.google_maps_key);
+                    autoCompleteOptions = await fnDownloadString(strAutoCompleteGoogleApi + txtSearch.Text + "&key=" + googleKey);
                     if (autoCompleteOptions == "Exception")
                     {
                         Toast.MakeText(Activity, "Unable to connect to server!!!", ToastLength.Short).Show();
@@ -153,10 +154,10 @@ namespace Anxityy.Fragments
             var formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
             var formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
             var pickerResult = Convert.ToInt32(Activity.FindViewById<TextView>(Resource.Id.seekbar_selectedVal).Text);
-
+            var googleKey = Resources.GetString(Resource.String.google_maps_key);
             var txtSearchTitle = Activity.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch).Text;
             var selectedLocations = objMapClass.predictions.Find(xer => xer.description == txtSearchTitle);
-            var placeDetails = await fnDownloadString(getPlaceDetails + selectedLocations.place_id + "&key=" + "AIzaSyCKO2n8Sbu1Ho7YHyeirQMILx0IAOMlxug");
+            var placeDetails = await fnDownloadString(getPlaceDetails + selectedLocations.place_id + "&key=" + googleKey);
             GoogleMapPlaceDetails objMapClasser = JsonConvert.DeserializeObject<GoogleMapPlaceDetails>(placeDetails);
             var geoDetails = objMapClasser.result.geometry.location;
 

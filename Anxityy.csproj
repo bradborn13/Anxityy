@@ -77,7 +77,6 @@
     <Compile Include="Fragments\Journal.cs" />
     <Compile Include="Fragments\NavigationFragment.cs" />
     <Compile Include="Fragments\Single_RecordAnx.cs" />
-    <Compile Include="Interface\IStartService.cs" />
     <Compile Include="Interface\Models.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Model\AnxityRecords.cs" />
