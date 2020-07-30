@@ -105,7 +105,7 @@ namespace Anxityy.Fragments
             return input.First().ToString().ToUpper() + input.Substring(1);
         }
 
-        public async void OnMapReady(GoogleMap googleMap)
+        public  void OnMapReady(GoogleMap googleMap)
         {
            
             if(anx.locationLat != null && anx.locationLong != null)

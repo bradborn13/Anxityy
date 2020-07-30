@@ -50,29 +50,45 @@
         android:orientation="vertical"
         android:gravity="center"
         android:paddingTop="40dp">
-             <android.support.design.widget.TextInputLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-              <AutoCompleteTextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:imeActionId="@+id/imeisearch"
-            android:layout_marginLeft="5dp"
-            android:hint="Enter Location"
-            android:layout_marginRight="5dp"
-            android:id="@+id/txtTextSearch"
-            android:inputType="text" />
+            android:orientation="horizontal"
+                    android:gravity="center"
 
-        </android.support.design.widget.TextInputLayout>
+            >
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:imeActionId="@+id/imeisearch"
+                    android:layout_marginLeft="5dp"
+                    android:hint="Enter Location"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/txtTextSearch"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+            <JoanZapata.XamarinIconify.Widget.IconTextView
+                android:text="{fa-map-marker}"
+                android:shadowColor="#22000000"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1"
+                android:textSize="40sp"
+                android:textColor="#CDCDCD"
+                android:id="@+id/currentLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
-     
+        </LinearLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-      
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <EditText
                 android:layout_width="300dp"
@@ -100,7 +116,7 @@
         </android.support.design.widget.TextInputLayout>
 
 
-   
+
         <TextView
             android:text="0"
             android:layout_width="match_parent"

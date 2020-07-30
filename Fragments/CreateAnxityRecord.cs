@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics.Drawables;
 using Android.Icu.Util;
 using Android.OS;
 using Android.Runtime;
@@ -18,6 +19,8 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
 using Java.Util.Zip;
+using JoanZapata.XamarinIconify;
+using JoanZapata.XamarinIconify.Widget;
 using Newtonsoft.Json;
 
 namespace Anxityy.Fragments
@@ -26,6 +29,7 @@ namespace Anxityy.Fragments
     {
         const string strAutoCompleteGoogleApi = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=";
         const string getPlaceDetails = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+        const string strReverseGeolocationApi = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
         AutoCompleteTextView txtSearch;
         string autoCompleteOptions;
         GoogleMapPlaceClass objMapClass;
@@ -36,6 +40,9 @@ namespace Anxityy.Fragments
         {
             base.OnCreate(savedInstanceState);
             // Create your fragment here
+            Iconify
+                 .with(new JoanZapata.XamarinIconify.Fonts.FontAwesomeModule())
+                 .with(new JoanZapata.XamarinIconify.Fonts.IonIconsModule());
 
         }
 
@@ -49,7 +56,9 @@ namespace Anxityy.Fragments
             formDate.Click += getDatePicker;
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
+    
             TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_selectedVal);
+               
             SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekBarRating);
             seekbar.ProgressChanged += (System.Object sender, SeekBar.ProgressChangedEventArgs e) =>
              {
@@ -88,6 +97,22 @@ namespace Anxityy.Fragments
                 {
                     Toast.MakeText(Activity, "Unable to process at this moment!!!", ToastLength.Short).Show();
                 }
+            };
+            IconTextView currentLocationButton = view.FindViewById<IconTextView>(Resource.Id.currentLocation);
+            currentLocationButton.Click += async (sender, args) =>
+            {
+                var googleKey = Resources.GetString(Resource.String.google_maps_key);
+                var location = await new LocationTracker().getLaskKnownLocation();
+
+                var geolocationData = await fnDownloadString(strReverseGeolocationApi + location.Latitude + "," + location.Longitude + "&key=" + googleKey);
+                if (geolocationData == "Exception")
+                {
+                    Toast.MakeText(Activity, "Could not get current location.Try again", ToastLength.Short).Show();
+                    return;
+                }
+                var objGeolocation = JsonConvert.DeserializeObject<GoogleMapGeolocaitonApi>(geolocationData);
+                txtSearch.Text = objGeolocation.results[0].formatted_address;
+
             };
 
             return view;
@@ -153,6 +178,13 @@ namespace Anxityy.Fragments
         {
             var formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
             var formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
+            if(string.IsNullOrEmpty(formNote))
+            {
+                var formNoteEdit = Activity.FindViewById<EditText>(Resource.Id.formNote);
+                formNoteEdit.RequestFocus();
+                formNoteEdit.SetError("Note required",null);
+                return;
+            }
             var pickerResult = Convert.ToInt32(Activity.FindViewById<TextView>(Resource.Id.seekbar_selectedVal).Text);
             var googleKey = Resources.GetString(Resource.String.google_maps_key);
             var txtSearchTitle = Activity.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch).Text;

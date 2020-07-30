@@ -43,9 +43,7 @@ namespace Anxityy
             Window.RequestFeature(Android.Views.WindowFeatures.NoTitle);
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-            JoanZapata.XamarinIconify.Iconify
-                     .with(new JoanZapata.XamarinIconify.Fonts.FontAwesomeModule())
-                     .with(new JoanZapata.XamarinIconify.Fonts.IonIconsModule());
+        
             var trans = SupportFragmentManager.BeginTransaction();
             var intent = new Intent(this, typeof(SampleService));
                 StartService(intent);
