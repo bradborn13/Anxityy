@@ -22,6 +22,7 @@ using Java.Util.Zip;
 using JoanZapata.XamarinIconify;
 using JoanZapata.XamarinIconify.Widget;
 using Newtonsoft.Json;
+using static Android.Views.View;
 
 namespace Anxityy.Fragments
 {
@@ -35,6 +36,7 @@ namespace Anxityy.Fragments
         GoogleMapPlaceClass objMapClass;
         string[] strPredictiveText;
         ArrayAdapter adapter = null;
+        bool optionCurrentLocation = false;
         int index = 0;
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,7 +58,25 @@ namespace Anxityy.Fragments
             formDate.Click += getDatePicker;
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
-    
+            LinearLayout formBackground = view.FindViewById<LinearLayout>(Resource.Id.formBackground);
+            formBackground.Touch += (s,e)=>
+            {
+                
+                    var handled = false;
+                    if (e.Event.Action == MotionEventActions.Down)
+                    {
+                    // do stuff
+                    InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
+
+                    inputManager.HideSoftInputFromWindow(view.WindowToken, HideSoftInputFlags.NotAlways);
+                    formBackground.RequestFocus();
+                    handled = true;
+                    }
+                   
+
+                    e.Handled = handled;
+                };
+            
             TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_selectedVal);
                
             SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekBarRating);
@@ -101,22 +121,15 @@ namespace Anxityy.Fragments
             IconTextView currentLocationButton = view.FindViewById<IconTextView>(Resource.Id.currentLocation);
             currentLocationButton.Click += async (sender, args) =>
             {
-                var googleKey = Resources.GetString(Resource.String.google_maps_key);
-                var location = await new LocationTracker().getLaskKnownLocation();
 
-                var geolocationData = await fnDownloadString(strReverseGeolocationApi + location.Latitude + "," + location.Longitude + "&key=" + googleKey);
-                if (geolocationData == "Exception")
-                {
-                    Toast.MakeText(Activity, "Could not get current location.Try again", ToastLength.Short).Show();
-                    return;
-                }
-                var objGeolocation = JsonConvert.DeserializeObject<GoogleMapGeolocaitonApi>(geolocationData);
-                txtSearch.Text = objGeolocation.results[0].formatted_address;
+                optionCurrentLocation = true; 
+                txtSearch.Text = "Current Location";
 
             };
 
             return view;
         }
+       
         async Task<string> fnDownloadString(string strUri)
         {
             WebClient webclient = new WebClient();
@@ -174,29 +187,80 @@ namespace Anxityy.Fragments
             //trans.SetCustomAnimations(Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top, Resource.Animation.abc_slide_out_top);
             trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "Main_Page").SetTransition(2).Commit();
         }
+        public bool onSubmitFormValidate()
+        {
+            bool isFormValid = true;
+           
+            EditText formDate = Activity.FindViewById<EditText>(Resource.Id.formDate);
+         
+            EditText formNote = Activity.FindViewById<EditText>(Resource.Id.formNote);
+            if (string.IsNullOrEmpty(formDate.Text))
+            {
+                isFormValid = false;
+                formDate.RequestFocus();
+                formDate.SetError("Date Required", null);
+            }
+            if (string.IsNullOrEmpty(formNote.Text))
+            {
+                isFormValid = false;
+                formNote.RequestFocus();
+                formNote.SetError("Note required", null);
+            }
+            return isFormValid;
+        }
         public async Task addAnxRecord(object sender, EventArgs e)
         {
-            var formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
-            var formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
-            if(string.IsNullOrEmpty(formNote))
+            bool isFormValid =  onSubmitFormValidate();
+            if (!isFormValid)
             {
-                var formNoteEdit = Activity.FindViewById<EditText>(Resource.Id.formNote);
-                formNoteEdit.RequestFocus();
-                formNoteEdit.SetError("Note required",null);
                 return;
             }
+            string formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
+            string formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
+          
             var pickerResult = Convert.ToInt32(Activity.FindViewById<TextView>(Resource.Id.seekbar_selectedVal).Text);
-            var googleKey = Resources.GetString(Resource.String.google_maps_key);
             var txtSearchTitle = Activity.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch).Text;
-            var selectedLocations = objMapClass.predictions.Find(xer => xer.description == txtSearchTitle);
-            var placeDetails = await fnDownloadString(getPlaceDetails + selectedLocations.place_id + "&key=" + googleKey);
-            GoogleMapPlaceDetails objMapClasser = JsonConvert.DeserializeObject<GoogleMapPlaceDetails>(placeDetails);
-            var geoDetails = objMapClasser.result.geometry.location;
 
-            //TO:DO Add long/lat var
-            var record = new AnxityRecords(formDate, pickerResult, formNote, "none", txtSearchTitle, geoDetails.lat, geoDetails.lng);
-            var db = new AnxityDatabase();
-            await db.SaveAnxityRecordAsync(record);
+            if (string.IsNullOrEmpty(txtSearchTitle))
+            {
+                var record = new AnxityRecords(formDate, pickerResult, formNote, "none");
+                var db = new AnxityDatabase();
+                await db.SaveAnxityRecordAsync(record);
+            }
+            else
+            {
+                //get location data based on the current location data
+                if ( optionCurrentLocation )
+                {
+                    var googleKey = Resources.GetString(Resource.String.google_maps_key);
+                    var location = await new LocationTracker().getLaskKnownLocation();
+
+                    var geolocationData = await fnDownloadString(strReverseGeolocationApi + location.Latitude + "," + location.Longitude + "&key=" + googleKey);
+                    if (geolocationData == "Exception")
+                    {
+                        Toast.MakeText(Activity, "Could not get current location.Try again", ToastLength.Short).Show();
+                        return;
+                    }
+                    GeolocationDetails currentLocationData = JsonConvert.DeserializeObject<GoogleMapGeolocaitonApi>(geolocationData).results[0];
+                    var record = new AnxityRecords(formDate, pickerResult, formNote, "none", currentLocationData.formatted_address
+                        , currentLocationData.geometry.location.lat, currentLocationData.geometry.location.lng);
+                    var db = new AnxityDatabase();
+                    await db.SaveAnxityRecordAsync(record);
+                }
+                else
+                {
+                    // get location data based on location search
+                    var googleKey = Resources.GetString(Resource.String.google_maps_key);
+                    var selectedLocations = objMapClass.predictions.Find(xer => xer.description == txtSearchTitle);
+                    var placeDetails = await fnDownloadString(getPlaceDetails + selectedLocations.place_id + "&key=" + googleKey);
+                    GoogleMapPlaceDetails objMapClasser = JsonConvert.DeserializeObject<GoogleMapPlaceDetails>(placeDetails);
+                    var geoDetails = objMapClasser.result.geometry.location;
+                    var record = new AnxityRecords(formDate, pickerResult, formNote, "none", txtSearchTitle, geoDetails.lat, geoDetails.lng);
+                    var db = new AnxityDatabase();
+                    await db.SaveAnxityRecordAsync(record);
+                }
+            
+            }
             var trans = Activity.SupportFragmentManager.BeginTransaction();
             trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
             trans.Commit();
@@ -212,7 +276,6 @@ namespace Anxityy.Fragments
             //De ce nu merge sa salvez recordu in baza dedate si sa stau pe form in continuare?
             Android.App.AlertDialog cat = new Android.App.AlertDialog.Builder(Activity).Create();
             cat.SetMessage("Location");
-
             cat.SetTitle("message title");
             cat.SetButton("OK", delegate { });
             cat.Show();

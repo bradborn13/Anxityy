@@ -4,12 +4,17 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+        android:id="@+id/formBackground"
+ android:focusableInTouchMode="true"
+android:clickable="true"
+android:focusable="true" 
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
+      
        >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -112,7 +117,7 @@
                 android:id="@+id/formDate"
                 android:hint="Date"
                 android:focusableInTouchMode="true"
-                android:focusable="false"/>
+                />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -137,6 +142,4 @@
 
 
     </LinearLayout>
-
-
 </LinearLayout>

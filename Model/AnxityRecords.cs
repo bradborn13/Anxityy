@@ -12,10 +12,10 @@ public class AnxityRecords
     public string note { get; set; }
     public string type { get; set; }
     public string locationName { get; set; }
-    public AnxityRecords( string date, int rating, string note, string type, string locationName, string locationLat = "null", string locationLong = "null")
+    public AnxityRecords( string date, int rating, string note, string type, string locationName = null, string locationLat = null, string locationLong = null)
 {
-        this.locationLat = locationLat == "null" ? null:locationLat;
-        this.locationLong = locationLong == "null" ? null : locationLong;
+        this.locationLat = locationLat;
+        this.locationLong = locationLong;
         this.locationName = locationName;
         this.date = date;
         this.rating = rating;
