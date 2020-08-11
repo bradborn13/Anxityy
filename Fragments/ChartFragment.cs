@@ -59,7 +59,7 @@ namespace Anxityy.Fragments
             }
             else
             {
-                charData = new AnxityDatabase().GetCurrentWeekRecordsCount();
+                charData = new AnxityDatabase().GetCurrentWeekRecords();
             }
 
             //ChartFragment

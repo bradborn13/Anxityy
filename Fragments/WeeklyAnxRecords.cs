@@ -33,7 +33,7 @@ namespace Anxityy.Fragments
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
             View view = inflater.Inflate(Resource.Layout.weeklyRecords, container, false);
-            var charData = new AnxityDatabase().GetCurrentWeekRecordsCount();
+            var charData = new AnxityDatabase().GetCurrentWeekRecords();
             var json = JsonConvert.SerializeObject(charData);
             Bundle mybundle = new Bundle();
             mybundle.PutString("CharData", json);

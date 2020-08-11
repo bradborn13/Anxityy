@@ -40,17 +40,11 @@ namespace Anxityy.Fragments
             {
                 var trans = Activity.SupportFragmentManager.BeginTransaction();
                 trans.Replace(Resource.Id.contentFragment, new WeeklyAnxityRecords(), "WeeklyAnxityRecords");
-
                 trans.Commit();
             };
-
-            ChartFragment charFragment = new ChartFragment();
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-            //var intent = new Intent(this, typeof(SampleService));
-            //    StartService(intent);
-            trans.Replace(Resource.Id.ChartFragment, charFragment, "ChartFragment");
+            trans.Replace(Resource.Id.ChartFragment, new ChartFragment(), "ChartFragment");
             trans.Commit();
-            //ChartFragment
             return view;
         }
     }
