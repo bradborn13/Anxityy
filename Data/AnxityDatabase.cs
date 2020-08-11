@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 
@@ -30,8 +31,22 @@ using System.Threading.Tasks;
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<AnxityRecords>().Wait();
         }
+    public  List<AnxityRecords>GetCurrentWeekRecordsCount()
+   {
+        DateTime givenDate = DateTime.Today;
+        DateTime startOfWeek = givenDate.AddDays(-1 * Convert.ToInt32(givenDate.DayOfWeek));
+        DateTime endOfWeek = startOfWeek.AddDays(7);
+         var cunt =  _database.Table<AnxityRecords>().ToListAsync().Result.Where(ob=> startOfWeek > DateTime.Parse(ob.date) || startOfWeek > DateTime.Parse(ob.date) && DateTime.Parse(ob.date) < endOfWeek).ToList();
+      
+        return cunt;
+  }
+    public  Task<List<AnxityRecords>> GetCurrentWeekRecords()
+    {
+        return _database.Table<AnxityRecords>().Where(xe =>
+            Convert.ToDateTime(xe.date).DayOfWeek == DateTime.Today.DayOfWeek).ToListAsync();
 
-        public Task<List<AnxityRecords>> GetAnxityRecordsAsync()
+             }
+    public Task<List<AnxityRecords>> GetAnxityRecordsAsync()
         {
             return _database.Table<AnxityRecords>().ToListAsync();
         }

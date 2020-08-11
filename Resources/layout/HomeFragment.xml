@@ -5,8 +5,29 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    
     >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TitleF"
+        android:text="Week"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/charLayout"
+        android:paddingTop="2dp">
+      
+         <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ChartFragment"
+         />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"

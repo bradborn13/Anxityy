@@ -72,12 +72,13 @@
     <Compile Include="Features\LocationTracker.cs" />
     <Compile Include="Features\Notification.cs" />
     <Compile Include="Features\DetectShake.cs" />
+    <Compile Include="Fragments\ChartFragment.cs" />
     <Compile Include="Fragments\CreateAnxityRecord.cs" />
     <Compile Include="Fragments\HomeFragment.cs" />
     <Compile Include="Fragments\Journal.cs" />
     <Compile Include="Fragments\NavigationFragment.cs" />
     <Compile Include="Fragments\Single_RecordAnx.cs" />
-    <Compile Include="Interface\Models.cs" />
+    <Compile Include="Fragments\WeeklyAnxRecords.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Model\AnxityRecords.cs" />
     <Compile Include="Model\GoogleMapPlaceAPI.cs" />
@@ -121,19 +122,28 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Activities\" />
+    <Folder Include="Interface\" />
     <Folder Include="Resources\anim\" />
     <Folder Include="Resources\custom\" />
-    <Folder Include="Resources\layout\Fragments\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BottomNavigationBar">
       <Version>1.4.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microcharts">
+      <Version>0.9.5.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="SkiaSharp">
+      <Version>2.80.1</Version>
+    </PackageReference>
+    <PackageReference Include="SkiaSharp.HarfBuzz">
+      <Version>2.80.1</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net">
       <Version>1.6.292</Version>
@@ -143,6 +153,9 @@
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
     </PackageReference>
     <PackageReference Include="xamarin-iconify-fontawesome">
       <Version>1.0.0</Version>
@@ -213,7 +226,18 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\navigation_view_colored.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\weeklyRecords.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ChartFragment.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionAnxityyHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

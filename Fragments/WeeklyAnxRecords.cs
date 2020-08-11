@@ -11,16 +11,14 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Java.Util;
 using Microcharts;
 using Microcharts.Droid;
 using Newtonsoft.Json;
 using SkiaSharp;
-using Random = System.Random;
 
 namespace Anxityy.Fragments
 {
-    public class HomeFragment : Android.Support.V4.App.Fragment
+    public class WeeklyAnxityRecords : Android.Support.V4.App.Fragment
     {
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -34,23 +32,15 @@ namespace Anxityy.Fragments
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-            View view = inflater.Inflate(Resource.Layout.HomeFragment, container, false);
-            LinearLayout charLayout = view.FindViewById<LinearLayout>(Resource.Id.charLayout);
-            charLayout.Click += (s, e) =>
-            {
-                var trans = Activity.SupportFragmentManager.BeginTransaction();
-                trans.Replace(Resource.Id.contentFragment, new WeeklyAnxityRecords(), "WeeklyAnxityRecords");
-
-                trans.Commit();
-            };
-
-            ChartFragment charFragment = new ChartFragment();
+            View view = inflater.Inflate(Resource.Layout.weeklyRecords, container, false);
+            var charData = new AnxityDatabase().GetCurrentWeekRecordsCount();
+            var json = JsonConvert.SerializeObject(charData);
+            Bundle mybundle = new Bundle();
+            mybundle.PutString("CharData", json);
+            ChartFragment charFragment = new ChartFragment { Arguments = mybundle };
             var trans = Activity.SupportFragmentManager.BeginTransaction();
-            //var intent = new Intent(this, typeof(SampleService));
-            //    StartService(intent);
-            trans.Replace(Resource.Id.ChartFragment, charFragment, "ChartFragment");
+            trans.Replace(Resource.Id.ChartFragment2, charFragment, "ChartFragment");
             trans.Commit();
-            //ChartFragment
             return view;
         }
     }

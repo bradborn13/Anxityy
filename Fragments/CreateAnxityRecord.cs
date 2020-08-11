@@ -59,26 +59,26 @@ namespace Anxityy.Fragments
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
             LinearLayout formBackground = view.FindViewById<LinearLayout>(Resource.Id.formBackground);
-            formBackground.Touch += (s,e)=>
+            formBackground.Touch += (s, e) =>
             {
-                
-                    var handled = false;
-                    if (e.Event.Action == MotionEventActions.Down)
-                    {
+
+                var handled = false;
+                if (e.Event.Action == MotionEventActions.Down)
+                {
                     // do stuff
                     InputMethodManager inputManager = (InputMethodManager)Activity.GetSystemService(Context.InputMethodService);
 
                     inputManager.HideSoftInputFromWindow(view.WindowToken, HideSoftInputFlags.NotAlways);
                     formBackground.RequestFocus();
                     handled = true;
-                    }
-                   
+                }
 
-                    e.Handled = handled;
-                };
-            
+
+                e.Handled = handled;
+            };
+
             TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_selectedVal);
-               
+
             SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekBarRating);
             seekbar.ProgressChanged += (System.Object sender, SeekBar.ProgressChangedEventArgs e) =>
              {
@@ -121,15 +121,13 @@ namespace Anxityy.Fragments
             IconTextView currentLocationButton = view.FindViewById<IconTextView>(Resource.Id.currentLocation);
             currentLocationButton.Click += async (sender, args) =>
             {
-
-                optionCurrentLocation = true; 
+                optionCurrentLocation = true;
                 txtSearch.Text = "Current Location";
-
             };
 
             return view;
         }
-       
+
         async Task<string> fnDownloadString(string strUri)
         {
             WebClient webclient = new WebClient();
@@ -190,9 +188,9 @@ namespace Anxityy.Fragments
         public bool onSubmitFormValidate()
         {
             bool isFormValid = true;
-           
+
             EditText formDate = Activity.FindViewById<EditText>(Resource.Id.formDate);
-         
+
             EditText formNote = Activity.FindViewById<EditText>(Resource.Id.formNote);
             if (string.IsNullOrEmpty(formDate.Text))
             {
@@ -210,14 +208,14 @@ namespace Anxityy.Fragments
         }
         public async Task addAnxRecord(object sender, EventArgs e)
         {
-            bool isFormValid =  onSubmitFormValidate();
+            bool isFormValid = onSubmitFormValidate();
             if (!isFormValid)
             {
                 return;
             }
             string formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
             string formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
-          
+
             var pickerResult = Convert.ToInt32(Activity.FindViewById<TextView>(Resource.Id.seekbar_selectedVal).Text);
             var txtSearchTitle = Activity.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch).Text;
 
@@ -230,7 +228,7 @@ namespace Anxityy.Fragments
             else
             {
                 //get location data based on the current location data
-                if ( optionCurrentLocation )
+                if (optionCurrentLocation)
                 {
                     var googleKey = Resources.GetString(Resource.String.google_maps_key);
                     var location = await new LocationTracker().getLaskKnownLocation();
@@ -259,7 +257,7 @@ namespace Anxityy.Fragments
                     var db = new AnxityDatabase();
                     await db.SaveAnxityRecordAsync(record);
                 }
-            
+
             }
             var trans = Activity.SupportFragmentManager.BeginTransaction();
             trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal");
