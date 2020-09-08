@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Java.Util;
+
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -34,10 +36,12 @@ using System.Threading.Tasks;
     public  List<AnxityRecords>GetCurrentWeekRecords()
    {
         DateTime givenDate = DateTime.Today;
+        //string givenDated = DateTime.Now.ToString("dddd, MMMM dd,  yyyy");
         DateTime startOfWeek = givenDate.AddDays(-1 * Convert.ToInt32(givenDate.DayOfWeek));
         DateTime endOfWeek = startOfWeek.AddDays(7);
-         var weeksRecords =  _database.Table<AnxityRecords>().ToListAsync().Result.Where(ob=> startOfWeek > DateTime.Parse(ob.date) || startOfWeek > DateTime.Parse(ob.date) && DateTime.Parse(ob.date) < endOfWeek).ToList();
-      
+        var weeksRecords = _database.Table<AnxityRecords>().ToListAsync().Result.Where(ob => DateTime.Compare(startOfWeek, DateTime.Parse(ob.date)) < 0 || DateTime.Compare(startOfWeek, DateTime.Parse(ob.date)) == 0 && DateTime.Compare(DateTime.Parse(ob.date), endOfWeek) > 0).ToList();
+;
+     
         return weeksRecords;
   }
     

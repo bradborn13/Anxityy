@@ -16,10 +16,11 @@ using Android.Content;
 using JoanZapata.XamarinIconify;
 using JoanZapata.XamarinIconify.Fonts;
 using Android.Support.Design.Widget;
+using Android.Content.PM;
 
 namespace Anxityy
 {
-    [Activity(Label = "Anxity", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "Anxity", Theme = "@style/AppTheme", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
         internal static MainActivity Instance { get; private set; }
@@ -39,23 +40,24 @@ namespace Anxityy
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            // Set our view from the "main" layout resource
             Window.RequestFeature(Android.Views.WindowFeatures.NoTitle);
+
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-        
+
+            //var intent = new Intent(this, typeof(SampleService));
+            //    StartService(intent);
+            ImageView createRecordForm = FindViewById<ImageView>(Resource.Id.buttonCreate);
+            createRecordForm.Click += CreateRecordForm_Click;
             var trans = SupportFragmentManager.BeginTransaction();
-            var intent = new Intent(this, typeof(SampleService));
-                StartService(intent);
-         
             trans.Replace(Resource.Id.contentFragment, new HomeFragment(), "Main_Page");
             trans.Replace(Resource.Id.menuFragment, new NavigationFragment(), "MenuFragment");
             trans.Commit();
+
             CreateNotificationChannel();
-            var createRecordForm = FindViewById<TextView>(Resource.Id.createRecordForm);
-            createRecordForm.Click += CreateRecordForm_Click;
+
         }
-    
+
         private void CreateRecordForm_Click(object sender, EventArgs e)
         {
             var trans = SupportFragmentManager.BeginTransaction();
@@ -126,20 +128,14 @@ namespace Anxityy
 
         void populateFromDb(object sender, EventArgs e)
         {
-            
+
             var records = new AnxityDatabase().GetAnxityRecordsAsync().Result;
-            foreach( AnxityRecords anx in records)
+            foreach (AnxityRecords anx in records)
             {
 
             }
 
         }
-        void newMethod()
-        {
-            string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "anxity.db");
-            var db = new SQLiteConnection(dbPath);
-        }
 
-    
     }
 }

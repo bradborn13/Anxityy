@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Hsalf.SmileRatingLib;
 using Java.Util;
 using Microcharts;
 using Microcharts.Droid;
@@ -26,8 +27,8 @@ namespace Anxityy.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             // Create your fragment here
+           
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -42,6 +43,7 @@ namespace Anxityy.Fragments
                 trans.Replace(Resource.Id.contentFragment, new WeeklyAnxityRecords(), "WeeklyAnxityRecords");
                 trans.Commit();
             };
+ 
             var trans = Activity.SupportFragmentManager.BeginTransaction();
             trans.Replace(Resource.Id.ChartFragment, new ChartFragment(), "ChartFragment");
             trans.Commit();

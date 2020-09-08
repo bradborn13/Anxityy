@@ -4,17 +4,17 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-      <LinearLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:paddingTop="2dp">
-      
-         <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/ChartFragment2"
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ChartFragment2"
          />
     </LinearLayout>
     <LinearLayout

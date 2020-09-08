@@ -1,17 +1,21 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Graphics;
 
 using Android.OS;
+using Android.Renderscripts;
 using Android.Views;
 using Android.Widget;
+using Hsalf.SmileRatingLib;
 using Java.Lang;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Xamarin.Forms.Platform.Android;
+using Math = System.Math;
 
 namespace Anxityy.Fragments
 {
@@ -19,6 +23,7 @@ namespace Anxityy.Fragments
     {
         private GoogleMap mMap;
         private AnxityRecords anx;
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -31,35 +36,61 @@ namespace Anxityy.Fragments
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
             View view = inflater.Inflate(Resource.Layout.singleRecordAnx, container, false);
-            LinearLayout anxLayout = view.FindViewById<LinearLayout>(Resource.Id.anxLayout);
             SetupMap();
-            LinearLayout locationLayout = view.FindViewById<LinearLayout>(Resource.Id.locationLayout);
+            ImageView imgView = Activity.FindViewById<ImageView>(Resource.Id.buttonCreate);
+            var navLayout = Activity.SupportFragmentManager.FindFragmentByTag("MenuFragment");
+            imgView.Visibility = ViewStates.Gone;
+            var fm = Activity.SupportFragmentManager.BeginTransaction();
 
+            fm.Hide(navLayout)
+                     .Commit();
+            ImageView backBtn = view.FindViewById<ImageView>(Resource.Id.backBtn);
+            backBtn.Click += delegate
+            {
+                var trans = Activity.SupportFragmentManager.BeginTransaction();
+
+                trans.Replace(Resource.Id.contentFragment, new Journal(), "Journal")
+                .SetTransition(1)
+                .Commit();
+            };
             View fragMap = view.FindViewById<View>(Resource.Id.map);
+          
             TextView locationTextView = view.FindViewById<TextView>(Resource.Id.locationTextView);
             TextView dateTextView = view.FindViewById<TextView>(Resource.Id.dateTextView);
-            TextView seekbarTextView = view.FindViewById<TextView>(Resource.Id.seekbar_val);
-            SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekbar);
+            //TextView seekbarTextView = view.FindViewById<TextView>(Resource.Id.seekbkar_val);
+            //SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekbar);
+            TextView noteText = view.FindViewById<TextView>(Resource.Id.Anxnote);
+            SmileRating smileRating = view.FindViewById<SmileRating>(Resource.Id.someFukingRating);
             getAnxRecord();
             dateTextView.Text = anx.date;
-            seekbarTextView.Text = Convert.ToString(anx.rating);
-            seekbar.Progress = anx.rating;
-            seekbar.Touch += (s, e) =>
-            {
-            };
-            seekbar.Enabled = false;
+            noteText.Text = anx.note;
+
+           
             if (string.IsNullOrEmpty(anx.locationLat) || string.IsNullOrEmpty(anx.locationLong))
             {
-                fragMap.Visibility = ViewStates.Invisible;
-                locationLayout.Visibility = ViewStates.Invisible;
-            } else {
+                //blur out the map
+                //fragMap.Visibility = ViewStates.Invisible;
+                //locationLayout.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
                 locationTextView.Text = anx.locationName;
 
             };
-        
+
             return view;
         }
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+            ImageView imgView = Activity.FindViewById<ImageView>(Resource.Id.buttonCreate);
+            imgView.Visibility = ViewStates.Visible;
+            var navLayout = Activity.SupportFragmentManager.FindFragmentByTag("MenuFragment");
+            var fm = Activity.SupportFragmentManager.BeginTransaction();
+            fm.Show(navLayout)
+                     .Commit();
 
+        }
         private void SetupMap()
         {
             if (mMap == null)
@@ -70,7 +101,7 @@ namespace Anxityy.Fragments
                 mapFragment.GetMapAsync(this);
             }
         }
-
+       
         public void getAnxRecord()
         {
             int anxId = Arguments.GetInt("recordId");
@@ -78,7 +109,7 @@ namespace Anxityy.Fragments
             anx = new AnxityDatabase().GetAnxityRecordAsync(anxId).Result;
         }
 
-        public void OnMapReady(GoogleMap googleMap)
+        public async void OnMapReady(GoogleMap googleMap)
         {
 
             if (anx.locationLat != null && anx.locationLong != null)
@@ -95,15 +126,7 @@ namespace Anxityy.Fragments
             }
             else
             {
-                //Dont initialize map
-
-                //var location = await new LocationTracker().getLaskKnownLocation();
-                ////var location = new LatLng(Convert.ToDouble(13.0291), Convert.ToDouble(80.2083));
-                //LatLng marker = new LatLng(location.Latitude, location.Longitude);
-                //CameraUpdate camera = CameraUpdateFactory.NewLatLngZoom(marker, 15);
-                //mMap.MoveCamera(camera);
-                //var markerOptions = new MarkerOptions().SetPosition(marker).SetTitle("Target 0 ");
-                //mMap.AddMarker(markerOptions);
+                mMap = googleMap;
             }
 
 

@@ -17,6 +17,7 @@ using Android.Views;
 using Android.Views.Animations;
 using Android.Views.InputMethods;
 using Android.Widget;
+using Hsalf.SmileRatingLib;
 using Java.Lang;
 using Java.Util.Zip;
 using JoanZapata.XamarinIconify;
@@ -26,7 +27,7 @@ using static Android.Views.View;
 
 namespace Anxityy.Fragments
 {
-    public class CreateAnxityRecord : Android.Support.V4.App.Fragment
+    public class CreateAnxityRecord : Android.Support.V4.App.Fragment,SmileRating.IOnSmileySelectionListener
     {
         const string strAutoCompleteGoogleApi = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=";
         const string getPlaceDetails = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
@@ -54,10 +55,16 @@ namespace Anxityy.Fragments
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
             View view = inflater.Inflate(Resource.Layout.createAnxityRecord, container, false);
+            var navLayout = Activity.SupportFragmentManager.FindFragmentByTag("MenuFragment");
+            var fm = Activity.SupportFragmentManager.BeginTransaction();
+            fm.Hide(navLayout)
+                     .Commit();
             var formDate = view.FindViewById<EditText>(Resource.Id.formDate);
             formDate.Click += getDatePicker;
             var exitForm = view.FindViewById<TextView>(Resource.Id.exitForm);
             exitForm.Click += ExitForm_Click1;
+            ImageView imgView = Activity.FindViewById<ImageView>(Resource.Id.buttonCreate);
+            imgView.Visibility = ViewStates.Gone;
             LinearLayout formBackground = view.FindViewById<LinearLayout>(Resource.Id.formBackground);
             formBackground.Touch += (s, e) =>
             {
@@ -76,18 +83,10 @@ namespace Anxityy.Fragments
 
                 e.Handled = handled;
             };
-
-            TextView pickerResult = view.FindViewById<TextView>(Resource.Id.seekbar_selectedVal);
-
-            SeekBar seekbar = view.FindViewById<SeekBar>(Resource.Id.seekBarRating);
-            seekbar.ProgressChanged += (System.Object sender, SeekBar.ProgressChangedEventArgs e) =>
-             {
-                 if (e.FromUser)
-                 {
-
-                     pickerResult.Text = "" + e.Progress;
-                 }
-             };
+            SmileRating smileRating = view.FindViewById<SmileRating>(Resource.Id.smile_rating);
+            smileRating.SmileySelection += (s,e) => {
+            };            
+            
             txtSearch = view.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch);
             txtSearch.TextChanged += async delegate (object sender, Android.Text.TextChangedEventArgs e)
             {
@@ -127,7 +126,17 @@ namespace Anxityy.Fragments
 
             return view;
         }
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+            ImageView imgView = Activity.FindViewById<ImageView>(Resource.Id.buttonCreate);
+            imgView.Visibility = ViewStates.Visible;
+            var navLayout = Activity.SupportFragmentManager.FindFragmentByTag("MenuFragment");
+            var fm = Activity.SupportFragmentManager.BeginTransaction();
+            fm.Show(navLayout)
+                     .Commit();
 
+        }
         async Task<string> fnDownloadString(string strUri)
         {
             WebClient webclient = new WebClient();
@@ -216,12 +225,13 @@ namespace Anxityy.Fragments
             string formDate = Activity.FindViewById<EditText>(Resource.Id.formDate).Text;
             string formNote = Activity.FindViewById<EditText>(Resource.Id.formNote).Text;
 
-            var pickerResult = Convert.ToInt32(Activity.FindViewById<TextView>(Resource.Id.seekbar_selectedVal).Text);
+            int smileRating = Activity.FindViewById<SmileRating>(Resource.Id.smile_rating).Rating;
+
             var txtSearchTitle = Activity.FindViewById<AutoCompleteTextView>(Resource.Id.txtTextSearch).Text;
 
             if (string.IsNullOrEmpty(txtSearchTitle))
             {
-                var record = new AnxityRecords(formDate, pickerResult, formNote, "none");
+                var record = new AnxityRecords(formDate, smileRating, formNote, "none");
                 var db = new AnxityDatabase();
                 await db.SaveAnxityRecordAsync(record);
             }
@@ -240,7 +250,7 @@ namespace Anxityy.Fragments
                         return;
                     }
                     GeolocationDetails currentLocationData = JsonConvert.DeserializeObject<GoogleMapGeolocaitonApi>(geolocationData).results[0];
-                    var record = new AnxityRecords(formDate, pickerResult, formNote, "none", currentLocationData.formatted_address
+                    var record = new AnxityRecords(formDate, smileRating, formNote, "none", currentLocationData.formatted_address
                         , currentLocationData.geometry.location.lat, currentLocationData.geometry.location.lng);
                     var db = new AnxityDatabase();
                     await db.SaveAnxityRecordAsync(record);
@@ -253,7 +263,7 @@ namespace Anxityy.Fragments
                     var placeDetails = await fnDownloadString(getPlaceDetails + selectedLocations.place_id + "&key=" + googleKey);
                     GoogleMapPlaceDetails objMapClasser = JsonConvert.DeserializeObject<GoogleMapPlaceDetails>(placeDetails);
                     var geoDetails = objMapClasser.result.geometry.location;
-                    var record = new AnxityRecords(formDate, pickerResult, formNote, "none", txtSearchTitle, geoDetails.lat, geoDetails.lng);
+                    var record = new AnxityRecords(formDate, smileRating, formNote, "none", txtSearchTitle, geoDetails.lat, geoDetails.lng);
                     var db = new AnxityDatabase();
                     await db.SaveAnxityRecordAsync(record);
                 }
@@ -279,6 +289,11 @@ namespace Anxityy.Fragments
             cat.Show();
 
 
+        }
+
+        public void OnSmileySelected(int smiley, bool reselected)
+        {
+            throw new NotImplementedException();
         }
     }
 }

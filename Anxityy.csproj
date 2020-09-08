@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Anxity.db" />
+    <AndroidAsset Include="Assets\fonts\Ruluko-Regular.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
@@ -129,6 +130,12 @@
   <ItemGroup>
     <PackageReference Include="BottomNavigationBar">
       <Version>1.4.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Karamunting.Android.SujithKanna.SmileyRating">
+      <Version>1.6.8</Version>
+    </PackageReference>
+    <PackageReference Include="Karamunting.Android.Warkiz.IndicatorSeekBar">
+      <Version>2.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microcharts">
       <Version>0.9.5.5</Version>
@@ -231,6 +238,30 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ChartFragment.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rectangleShadow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\pin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\backBtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\AddBtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ovalButtonShadow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\greyShadow.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
