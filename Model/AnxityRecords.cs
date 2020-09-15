@@ -1,6 +1,4 @@
 ﻿using Android.Renderscripts;
-using Android.Text.Format;
-using Java.Util;
 using SQLite;
 
 public class AnxityRecords
@@ -14,7 +12,7 @@ public class AnxityRecords
     public string note { get; set; }
     public string type { get; set; }
     public string locationName { get; set; }
-    public AnxityRecords( string date , int rating, string note, string type, string locationName = null, string locationLat = null, string locationLong = null)
+    public AnxityRecords( string date, int rating, string note, string type, string locationName = null, string locationLat = null, string locationLong = null)
 {
         this.locationLat = locationLat;
         this.locationLong = locationLong;

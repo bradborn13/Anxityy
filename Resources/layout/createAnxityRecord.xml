@@ -120,10 +120,26 @@ android:focusable="true"
                 />
         </android.support.design.widget.TextInputLayout>
 
-            <com.hsalf.smilerating.SmileRating
-        android:id="@+id/smile_rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:id="@+id/seekbar_selectedVal" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBarRating"
+            android:max="10"
+            
+          />
+
+
+
 
     </LinearLayout>
 </LinearLayout>

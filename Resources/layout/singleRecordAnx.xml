@@ -3,148 +3,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <FrameLayout
+    <fragment
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <fragment
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="BackBtn"
-            android:src="@drawable/back"
-            android:id="@+id/backBtn"
-            android:layout_margin="8dp"/>
-    </FrameLayout>
-
-
+        android:layout_height="200dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/rectangleShadow"
-        android:elevation="8dp"
-       >
-
+        android:layout_height="wrap_content"
+        android:id="@+id/anxLayout">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rectangleShadow"
-            android:elevation="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:orientation="vertical"
+            android:id="@+id/locationLayout"
             >
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/locationSection"
-                android:paddingTop="25dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
                 android:paddingBottom="10dp"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/locationTextView"
-                    android:layout_gravity="left"
-                    android:textSize="25px"
-                    android:layout_marginBottom="10dp"
-                />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/material_grey_300"
-                    android:layout_gravity="center"
-                    android:text="Location"
-                />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:orientation="vertical"
-                android:layout_gravity="center_horizontal"
+                android:text="Location"
+                android:typeface="serif"
                 />
             <TextView
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:elevation="2dp"
-                android:background="@drawable/greyShadow"
-                
-            
-                />
-            <LinearLayout
                 android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_marginTop="25dp"
-                android:id="@+id/dateSection"
-                android:layout_marginBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:layout_height="wrap_content"
-            >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/dateTextView"
-                    android:textSize="25px"
-                    android:layout_gravity="left"
-                    android:layout_marginBottom="10dp"
-
-                    
+              android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/locationTextView"
+                android:typeface="serif"
                 />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/material_grey_300"
-                    android:text="Date"
-                    android:layout_gravity="center"
-                />
-            </LinearLayout>
         </LinearLayout>
-
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:text="Date"
+                android:typeface="serif"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+         android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/dateTextView"
+                />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <com.hsalf.smilerating.SmileRating
-                android:paddingTop="20dp"
-                android:id="@+id/someFukingRating"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text=" Current Rating "
+                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:id="@+id/seekbar_val" />
+
+            <SeekBar
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/seekbar"
+                android:max="10"
+          />
         </LinearLayout>
-
-
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/material_grey_300"
-        android:layout_gravity="center_vertical"
-        android:paddingTop="20dp"
-        android:text="COmment "
-               />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/material_grey_600"
-        android:paddingTop="20dp"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/Anxnote" />
+
 </LinearLayout>

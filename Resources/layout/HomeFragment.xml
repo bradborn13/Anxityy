@@ -1,6 +1,6 @@
 
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/TitleFrag"
+        android:id="@+id/TitleF"
         android:text="Week"
         android:textColor="@color/colorAccent"
         android:gravity="center"
@@ -21,11 +21,11 @@
         android:layout_alignParentTop="true"
         android:id="@+id/charLayout"
         android:paddingTop="2dp">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ChartFragment"
+      
+         <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ChartFragment"
          />
     </LinearLayout>
     <LinearLayout
@@ -33,11 +33,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:elevation="5dp"
-        android:background="@drawable/rectangleShadow"
-        android:layout_marginBottom="250dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="250dp"
         android:paddingLeft="40dp"
         android:id="@+id/wrapper_fragment_main">
         <RelativeLayout
@@ -68,7 +64,6 @@
                 android:contentDescription="icon1"
                 android:id="@+id/imageView1" />
         </RelativeLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -92,15 +87,11 @@
         />
             <ImageView
                 android:src="@drawable/arrow"
-                android:contentDescription="createNav"
+                android:contentDescription="icon2"
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="300dp"
                 android:id="@+id/imageView2" />
-          
         </RelativeLayout>
-        
- 
     </LinearLayout>
-      
-</LinearLayout>
+</RelativeLayout>
