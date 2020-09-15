@@ -132,7 +132,7 @@ namespace Anxityy.Fragments
                     fragment.Arguments = args;
                     var trans = Activity.SupportFragmentManager.BeginTransaction();
                     trans.Replace(Resource.Id.contentFragment, fragment, "Single_record")
-                    
+                    .AddToBackStack("true")
                     .Commit(); 
                 };
 

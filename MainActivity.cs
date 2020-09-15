@@ -62,6 +62,7 @@ namespace Anxityy
         {
             var trans = SupportFragmentManager.BeginTransaction();
             trans.Replace(Resource.Id.contentFragment, new CreateAnxityRecord(), "AddAnxityForm");
+            trans.AddToBackStack("true");
             trans.Commit();
         }
 
