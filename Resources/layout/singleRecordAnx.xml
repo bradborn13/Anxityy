@@ -6,12 +6,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/mapLayout"
         >
+     
         <fragment
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
+             <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#A6FFFFFF"/>
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -19,6 +26,7 @@
             android:src="@drawable/back"
             android:id="@+id/backBtn"
             android:layout_margin="8dp"/>
+      
     </FrameLayout>
 
 
@@ -40,27 +48,30 @@
             android:elevation="2dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/locationSection"
-                android:paddingTop="25dp"
-                android:paddingBottom="10dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/locationTextView"
-                    android:layout_gravity="left"
+                    android:layout_gravity="center"
                     android:textSize="25px"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                 />
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,28 +84,25 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                >
+                <TextView
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:elevation="2dp"
+                    android:background="@drawable/greyShadow"
                 />
-            <TextView
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:elevation="2dp"
-                android:background="@drawable/greyShadow"
-                
-            
-                />
+            </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_marginTop="25dp"
                 android:id="@+id/dateSection"
                 android:layout_marginBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:layout_height="wrap_content"
             >
                 <TextView
@@ -102,10 +110,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/dateTextView"
                     android:textSize="25px"
-                    android:layout_gravity="left"
-                    android:layout_marginBottom="10dp"
-
-                    
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
                 />
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,22 +135,20 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:paddingTop="20dp"
+                android:gravity="center_horizontal"
+                android:id="@+id/Anxnote" />
+        </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/material_grey_300"
-        android:layout_gravity="center_vertical"
-        android:paddingTop="20dp"
-        android:text="COmment "
-               />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/material_grey_600"
-        android:paddingTop="20dp"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/Anxnote" />
+
 </LinearLayout>
